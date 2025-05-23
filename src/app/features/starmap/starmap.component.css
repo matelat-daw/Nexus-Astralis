@@ -1,0 +1,197 @@
+.star-view {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-color: #000;
+  overflow: hidden;
+}
+
+a{
+  text-decoration: none;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.controls {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 10;
+  transition: opacity 0.15s ease;
+}
+
+.controls.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.control-button {
+  padding: 3px;
+  width: 50px;
+  height: 50px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: none;
+  color: var(--text-primary);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.icons{
+  width: 100%;
+  height: 100%;
+  fill: var(--text-primary);
+  transition: 0.15s ease;
+  font-size: 2em;
+}
+
+.control-button:hover {
+  color: var(--accent-yellow);
+  .icons{
+    fill: var(--accent-yellow);
+    opacity: 1;
+    path{
+      fill: var(--accent-yellow);
+    }
+  }
+}
+
+.show-controls-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+  .icons{
+    opacity: 0.5;
+  }
+}
+
+/* Tooltip para hover sobre constelación */
+.constellation-tooltip {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #ffcc00;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  pointer-events: none;
+  z-index: 100;
+  transform: translate(-50%, 20px);
+  text-align: center;
+  min-width: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Panel lateral de información */
+.constellation-panel {
+  position: fixed;
+  top: 0;
+  left: -400px;
+  width: 380px;
+  height: 100%;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px) brightness(1.5);
+  color: var(--text-primary);
+  z-index: 1000;
+  transition: left 0.3s ease-in-out;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  overflow-y: auto;
+}
+
+.constellation-panel.active {
+  left: 0;
+}
+
+.panel-content {
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-header {
+  background-color: rgba(0, 0, 0, 0.9);
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.panel-header h2 {
+  margin: 0;
+  color: var(--accent-yellow);
+  font-size: 24px;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 0 5px;
+  line-height: 1;
+}
+
+.panel-body {
+  padding: 20px;
+  flex-grow: 1;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+.panel-footer {
+  padding: 15px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+}
+
+.favorite-button {
+  display: block;
+  background-color: var(--accent-yellow);
+  color: #000;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s;
+}
+svg{
+  fill: #000;
+}
+
+.favorite-button:hover {
+  background-color: var(--accent-yellow);
+}
+
+.favorite-button .icon {
+  font-size: 18px;
+}
+
+.not-logged{
+  opacity: 0.5;
+  filter: saturate(0);
+}
+
+.not-logged:hover{
+  opacity: 0.8;
+}
+

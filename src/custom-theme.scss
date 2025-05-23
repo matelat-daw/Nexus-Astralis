@@ -1,0 +1,98 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+
+html {
+  @include mat.theme((
+    color: (
+      theme-type: dark,
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+.mat-mdc-tab-header {
+  --mdc-tab-indicator-active-indicator-color: var(--text-secondary);
+}
+
+.mat-mdc-tab .mdc-tab__text-label {
+  color: var(--highlight);
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.mat-mdc-card-header .mat-mdc-card-header-text .mat-mdc-card-title {
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  font-family: var(--font-body);
+}
+
+.mat-mdc-tab-group.mat-mdc-tab-group-stretch-tabs>.mat-mdc-tab-header .mat-mdc-tab {
+  flex-grow: 0.5;
+}
+
+.mat-card-title {
+  color: var(--highlight);
+  font-family: var(--font-title);
+}
+
+.mat-mdc-tab:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label {
+  color: var(--text-color);
+}
+
+.mat-mdc-tab:hover .mdc-tab__text-label {
+  color: var(--accent-yellow);
+}
+
+.mat-mdc-card p {
+  margin-bottom: 0.8rem;
+}
+
+
+.mat-mdc-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.8rem 0;
+}
+
+mat-card-header.mat-mdc-card-header {
+  padding: 0;
+  text-align: center;
+  display: block;
+}
+
+.mat-mdc-card-content {
+  padding: 1rem;
+}
+
+.mat-checkbox {
+  margin-top: 16px;
+}
+
+mat-card.mat-mdc-card.mdc-card {
+  background-color: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--highlight);
+  border-radius: 0;
+}
+
+.mdc-tab.mat-mdc-tab {
+  padding: 0;
+}
+
+/* Responsive */
+
+@media (min-width: 768px) {
+  .mat-mdc-card {
+    padding: 0.8rem;
+  }
+
+  mat-card.mat-mdc-card.mdc-card {
+    border-radius: var(--border-radius);
+  }
+}

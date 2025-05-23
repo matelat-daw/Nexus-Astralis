@@ -1,0 +1,8 @@
+.title {
+    margin: 1em;
+    margin-top: 2em;
+    text-shadow: 0.3125rem 0.125rem 0.0625rem var(--highlight);
+    text-align: center;
+    align-items: center;
+    font-size: 7vw;
+}

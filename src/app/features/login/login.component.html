@@ -1,0 +1,40 @@
+<section>
+    <div class="login">
+        <h1>Iniciar sesión</h1>
+        <form [formGroup]="form" (submit)="onSubmit()">
+            <div>
+                <label for="email">Email</label>
+                <input name="email" formControlName="email" placeholder="Ej. user@dominio.com">
+                @for (msg of errorMessages['email']; track msg) {
+                    <span class="errorMessage">{{msg}}</span>
+                }
+            </div>
+            <div>
+                <label for="password">Contraseña</label>
+                <div class="password-input">
+                    <input name="password" [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="">
+                    <i class="fa-solid" 
+                       [class.fa-eye]="!showPassword" 
+                       [class.fa-eye-slash]="showPassword"
+                       (click)="showPassword = !showPassword">
+                    </i>
+                </div>
+                @for (msg of errorMessages['password']; track msg) {
+                    <span class="errorMessage">{{msg}}</span>
+                }
+            </div>
+            @for (msg of errorMessages['credenciales']; track msg) {
+                <span class="errorMessage errorMessageGlobal">{{msg}}</span>
+            }
+            @for (msg of errorMessages['global']; track msg) {
+                <span class="errorMessage errorMessageGlobal">{{msg}}</span>
+            }
+            <button type="submit">Entrar</button>
+            <button>Acceder con Google</button>
+            <button>Acceder con Microsoft</button>
+        </form>
+        <div class="redirect">
+            <span>¿No tienes cuenta?</span><a routerLink="/register" class="link">Crear una</a>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,62 @@
+<div class="star-view">
+  <!-- Canvas -->
+  <canvas #starCanvas></canvas>
+  <!-- Panel lateral de información de constelación -->
+  <div class="constellation-panel" [class.active]="showConstellationInfo">
+    @if (selectedConstellation) {
+    <div class="panel-content">
+      <div class="panel-header">
+        <h2>{{ constellationName }}</h2>
+        <button class="close-button" (click)="deselectConstellation()">×</button>
+      </div>
+      <div class="panel-body">
+        <p>{{ constellationDescription }}</p>
+      </div>
+      <div class="panel-footer">
+        <a class="favorite-button" routerLink="/constellation/{{constellationID}}"><mat-icon>rocket_launch</mat-icon> Ver</a>
+        @if (isLogged()) {
+          <button class="favorite-button" (click)="addToFavorites()">
+            @if (isFavorite()){
+              <svg height="24px" viewBox="0 -960 960 960" width="24px"><path d="M480-320q48 0 85.5-28.5T620-422H340q17 45 54.5 73.5T480-320ZM380-480q25 0 42.5-17.5T440-540q0-25-17.5-42.5T380-600q-25 0-42.5 17.5T320-540q0 25 17.5 42.5T380-480Zm200 0q25 0 42.5-17.5T640-540q0-25-17.5-42.5T580-600q-25 0-42.5 17.5T520-540q0 25 17.5 42.5T580-480ZM305-704l112-145q12-16 28.5-23.5T480-880q18 0 34.5 7.5T543-849l112 145 170 57q26 8 41 29.5t15 47.5q0 12-3.5 24T866-523L756-367l4 164q1 35-23 59t-56 24q-2 0-22-3l-179-50-179 50q-5 2-11 2.5t-11 .5q-32 0-56-24t-23-59l4-165L95-523q-8-11-11.5-23T80-570q0-25 14.5-46.5T135-647l170-57Zm49 69-194 64 124 179-4 191 200-55 200 56-4-192 124-177-194-66-126-165-126 165Zm126 135Z"/></svg>
+              Eliminar de
+            } @else {
+              <svg height="24px" viewBox="0 -960 960 960" width="24px"><path d="m305-704 112-145q12-16 28.5-23.5T480-880q18 0 34.5 7.5T543-849l112 145 170 57q26 8 41 29.5t15 47.5q0 12-3.5 24T866-523L756-367l4 164q1 35-23 59t-56 24q-2 0-22-3l-179-50-179 50q-5 2-11 2.5t-11 .5q-32 0-56-24t-23-59l4-165L95-523q-8-11-11.5-23T80-570q0-25 14.5-46.5T135-647l170-57Zm49 69-194 64 124 179-4 191 200-55 200 56-4-192 124-177-194-66-126-165-126 165Zm126 135Z"/></svg> 
+              Añadir a
+            }         
+            Favoritos    
+          </button>
+        } @else {
+          <a class="favorite-button not-logged" routerLink="/constellation">
+            <svg height="24px" viewBox="0 -960 960 960" width="24px"><path d="m305-704 112-145q12-16 28.5-23.5T480-880q18 0 34.5 7.5T543-849l112 145 170 57q26 8 41 29.5t15 47.5q0 12-3.5 24T866-523L756-367l4 164q1 35-23 59t-56 24q-2 0-22-3l-179-50-179 50q-5 2-11 2.5t-11 .5q-32 0-56-24t-23-59l4-165L95-523q-8-11-11.5-23T80-570q0-25 14.5-46.5T135-647l170-57Zm49 69-194 64 124 179-4 191 200-55 200 56-4-192 124-177-194-66-126-165-126 165Zm126 135Z"/></svg> 
+            Favoritos
+          </a>
+        }
+      </div>
+    </div>
+    }
+  </div>
+
+  <!-- Tooltip para nombre de constelación en hover -->
+  @if (hoverConstellation) {
+  <div class="constellation-tooltip" [style.left.px]="tooltipX" [style.top.px]="tooltipY">
+    {{ hoverConstellation }}
+  </div>
+  }
+
+  <!-- Controls -->
+  
+    <div class="controls" [class.hidden]="!showControls">
+      <a class="control-button" (click)="toggleControls()"><i class="fa-solid fa-eye-slash icons"></i></a>
+      <button class="control-button" (click)="toggleConstellations()">
+        <svg class="icons" [class.active]="showConstellations" fill="#fff" viewBox="0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M461.639,214.033c-8.017,0-15.593,1.883-22.322,5.216l-128.875-85.917c0.067-1.069,0.114-2.145,0.114-3.233 c0-27.811-22.548-50.361-50.361-50.361c-14.611,0-27.762,6.228-36.961,16.167L98.019,80.253 C91.25,60.428,72.477,46.164,50.361,46.164C22.548,46.164,0,68.714,0,96.525c0,27.813,22.548,50.361,50.361,50.361 c15.068,0,28.58-6.626,37.809-17.113l123.998,15.501c3.084,9.765,9.067,18.237,16.936,24.425l-21.24,148.681 c-18.519,7.442-31.601,25.556-31.601,46.735c0,27.813,22.548,50.361,50.361,50.361c25.793,0,47.042-19.394,49.996-44.391 l154.851-66.364c8.409,6.3,18.853,10.034,30.169,10.034c27.813,0,50.361-22.548,50.361-50.361 C512,236.583,489.452,214.033,461.639,214.033z M257.887,324.321l21.069-147.488c1.21-0.485,2.399-1.014,3.562-1.59 l126.477,84.317L257.887,324.321z"></path> </g> </g> <g> <g> <polygon points="440.345,58.23 413.743,53.089 400.631,29.377 387.52,53.089 360.918,58.23 379.416,78.029 376.083,104.918 400.631,93.441 425.177,104.918 421.848,78.029 "></polygon> </g> </g> <g> <g> <polygon points="125.902,255.082 88.056,247.768 69.402,214.033 50.747,247.768 12.902,255.082 39.216,283.25 34.479,321.504 69.402,305.177 104.324,321.504 99.587,283.25 "></polygon> </g> </g> <g> <g> <polygon points="440.345,435.935 413.743,430.793 400.631,407.082 387.52,430.793 360.918,435.935 379.416,455.734 376.083,482.623 400.631,471.146 425.177,482.623 421.848,455.734 "></polygon> </g> </g> </g></svg>
+      </button>
+      <a routerLink="/" class="control-button">
+        <i class="fa-solid fa-house icons"></i>
+      </a>
+    </div>
+  @if (!showControls) {
+    <a class="show-controls-button control-button" (click)="showControlsAgain()">
+      <i class="fa-solid fa-eye icons"></i>
+    </a>
+  }
+</div>

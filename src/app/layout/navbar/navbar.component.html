@@ -1,0 +1,22 @@
+<nav class="navbar">
+    <div class="header">
+        <a routerLink="/" class="navbar__logo title">Nexus Astralis</a>
+        <!-- <img src="logo.png" alt="Nexus Astralis"> -->
+        <ul class="navbar__menu">
+            <li><a routerLink="/starmap">Starmap</a></li>
+            <li><a routerLink="/events">Eventos</a></li>
+            <li><a routerLink="/catalog">Catálogo</a></li>
+        </ul>
+    </div>
+    @if (isLogged()) {
+        <div class="user-management">
+            <a routerLink="/profile" title="Perfil"><i class="fa-solid fa-user-astronaut"></i></a>
+            <a (click)="logout()" routerLink="/logout" title="Cerrar sesión"><i class="fa-solid fa-right-from-bracket"></i></a>
+        </div>
+    } @else {
+        <div class="auth">
+            <a routerLink="/register">Registrarse</a>
+            <a routerLink="/login">Acceder</a>
+        </div>
+    }
+</nav>

@@ -1,0 +1,239 @@
+<section class="profile-container">
+    @if (loading()) {
+        <div class="loading-container">
+            <mat-spinner/>
+        </div>
+    }
+    @if (!loading() && user()) {
+        <div class="profile-header">
+            <img [src]="profileImage()" alt="Imagen de perfil" class="profile-image">
+            <h2>{{user()?.nick}}</h2>
+        </div>
+
+        <mat-tab-group animationDuration="300ms" class="profile-tabs">
+            <mat-tab label="Perfil">
+                <div class="tab-content">
+                    @if (!editMode()) {
+                        <div class="profile-info">
+                            @if (user()?.about) {
+                            <mat-card>
+                                    <mat-card-header>
+                                        <mat-card-title>Sobre mí</mat-card-title>
+                                    </mat-card-header>
+                                    <mat-card-content>
+                                        <p>{{user()?.about}}</p>
+                                    </mat-card-content>
+                                </mat-card>
+                            }
+                            <mat-card>
+                                <mat-card-header>
+                                    <mat-card-title>Información personal</mat-card-title>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <p><strong>Ubicación:</strong> {{user()?.userLocation}}</p>
+                                    <p><strong>Nombre:</strong> {{user()?.name}} {{user()?.surname1}} {{user()?.surname2}}</p>
+                                    <p><strong>Fecha de nacimiento:</strong> {{user()?.bday}}</p>
+                                    <p><strong>Email:</strong> {{user()?.email}}</p>
+                                    <p><strong>Teléfono:</strong> {{user()?.phoneNumber}}</p>
+                                    <p><strong>Perfil público:</strong> {{user()?.publicProfile ? 'Sí' : 'No'}}</p>
+                                </mat-card-content>
+                            </mat-card>
+                            
+                            <!-- Botones estilizados como en login/register -->
+                            <div class="action-buttons">
+                                <button (click)="toggleEditMode()">
+                                    Editar perfil
+                                </button>
+                                <button (click)="deleteAccount()" class="danger">
+                                    Eliminar cuenta
+                                </button>
+                            </div>
+                        </div>
+                    } @else {
+                        <div class="profile-edit">
+                            <mat-card>
+                                <mat-card-header>
+                                    <mat-card-title>Editar perfil</mat-card-title>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <form [formGroup]="profileForm">
+                                        <mat-form-field appearance="outline" class="full-width">
+                                            <mat-label>Sobre mí</mat-label>
+                                            <textarea matInput formControlName="about" rows="4"></textarea>
+                                            @for (msg of errorMessages()['about']; track msg) {
+                                                <mat-error>{{msg}}</mat-error>
+                                            }
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Ubicación</mat-label>
+                                            <input matInput formControlName="userLocation">
+                                            @for (msg of errorMessages()['userLocation']; track msg) {
+                                                <mat-error>{{msg}}</mat-error>
+                                            }
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Nombre</mat-label>
+                                            <input matInput formControlName="name">
+                                            @for (msg of errorMessages()['name']; track msg) {
+                                                <mat-error>{{msg}}</mat-error>
+                                            }
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Primer apellido</mat-label>
+                                            <input matInput formControlName="surname1">
+                                            @for (msg of errorMessages()['surname1']; track msg) {
+                                                <mat-error>{{msg}}</mat-error>
+                                            }
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Segundo apellido</mat-label>
+                                            <input matInput formControlName="surname2">
+                                            @for (msg of errorMessages()['surname2']; track msg) {
+                                                <mat-error>{{msg}}</mat-error>
+                                            }
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Fecha de nacimiento</mat-label>
+                                            <input matInput formControlName="bday" type="date">
+                                            @for (msg of errorMessages()['bday']; track msg) {
+                                                <mat-error>{{msg}}</mat-error>
+                                            }
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Email</mat-label>
+                                            <input matInput formControlName="email" type="email">
+                                            @for (msg of errorMessages()['email']; track msg) {
+                                                <mat-error>{{msg}}</mat-error>
+                                            }
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Teléfono</mat-label>
+                                            <input matInput formControlName="phoneNumber">
+                                            @for (msg of errorMessages()['phoneNumber']; track msg) {
+                                                <mat-error>{{msg}}</mat-error>
+                                            }
+                                        </mat-form-field>
+                                        
+                                        <mat-form-field appearance="outline" class="full-width">
+                                            <mat-label>Nombre de usuario</mat-label>
+                                            <input matInput formControlName="nick" placeholder="Nombre de usuario">
+                                            @for (msg of errorMessages()['nick']; track msg) {
+                                                <mat-error>{{msg}}</mat-error>
+                                            }
+                                        </mat-form-field>
+
+                                        <mat-checkbox formControlName="publicProfile">
+                                            Perfil público
+                                        </mat-checkbox>
+                                        
+                                        @for (msg of errorMessages()['global']; track msg) {
+                                            <div class="errorMessage errorMessageGlobal">{{msg}}</div>
+                                        }
+                                    </form>
+                                </mat-card-content>
+                                <mat-card-actions>
+                                    <div class="action-buttons">
+                                        <button (click)="saveProfile()">
+                                            Guardar cambios
+                                        </button>
+                                        <button (click)="toggleEditMode()" class="danger">
+                                            Cancelar
+                                        </button>
+                                    </div>
+                                </mat-card-actions>
+                            </mat-card>
+                        </div>
+                    }
+                </div>
+            </mat-tab>
+
+            <!-- Pestaña de Favoritos -->
+            <mat-tab label="Favoritos">
+                <div class="tab-content">
+                    @if(user()?.favorites && user()?.favorites!.length > 0) {
+                        <div class="favorites-list">
+                            @for (favorite of user()?.favorites; track favorite.id) {
+                                <mat-card class="favorite-card">
+                                    <img [src]="favorite.image_url" alt="{{favorite.latin_name}}" class="favorite-image">
+                                    <mat-card-content>
+                                        <a [routerLink]="['/constellation', favorite.id]" class="constellation-link">{{favorite.latin_name}}</a>
+                                        <p>{{favorite.mythology}}</p>
+                                    </mat-card-content>
+                                    <mat-card-actions>
+                                        <div class="action-buttons">
+                                            <button (click)="removeFavorite(favorite.id)" class="danger">
+                                                Eliminar
+                                            </button>
+                                        </div>
+                                    </mat-card-actions>
+                                </mat-card>
+                            }
+                        </div>
+                    } @else {
+                        <div class="empty-state">
+                            <mat-icon>star_border</mat-icon>
+                            <p>No tienes constelaciones favoritas</p>
+                            
+                            <div class="action-buttons">
+                                <button [routerLink]="['/catalog']">
+                                    Explorar catálogo
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </mat-tab>
+
+            <!-- Pestaña de Comentarios -->
+            <mat-tab label="Comentarios">
+                <div class="tab-content">
+                    @if(user()?.comments && user()?.comments!.length > 0) {
+                        <div class="comments-list">
+                            @for (comment of user()?.comments; track comment.id) {
+                                <mat-card class="comment-card">
+                                    <mat-card-header>
+                                        <mat-card-title>
+                                            <a class="constellation-link" (click)="navigateToConstellation(comment.constellationId)">
+                                                {{comment.constellationName}}
+                                            </a>
+                                        </mat-card-title>
+                                    </mat-card-header>
+                                    <mat-card-content>
+                                        <p class="card-text">{{comment.comment}}</p>
+                                    </mat-card-content>
+                                    <mat-card-actions>
+                                        <div class="action-buttons">
+                                            <!-- <button (click)="startEditComment(comment)">
+                                                Editar
+                                            </button> -->
+                                            <button (click)="deleteComment(comment.id)" class="danger">
+                                                Eliminar
+                                            </button>
+                                        </div>
+                                    </mat-card-actions>
+                                </mat-card>
+                            }
+                        </div>
+                    } @else {
+                        <div class="empty-state">
+                            <mat-icon>comment</mat-icon>
+                            <p>No has realizado ningún comentario</p>
+                            <div class="action-buttons">
+                                <button [routerLink]="['/catalog']">
+                                    Explorar catálogo
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    }
+</section>

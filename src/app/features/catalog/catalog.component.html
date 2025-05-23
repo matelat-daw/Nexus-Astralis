@@ -1,0 +1,36 @@
+<div class="search-container">
+    <div class="search-wrapper">
+        <span class="search-icon">
+            <i class="material-icons">search</i>
+        </span>
+        <input type="text" placeholder="Buscar constelaciones..." (input)="search($event)"
+            class="search-input">
+    </div>
+</div>
+
+<section>
+    @if(filteredConstellations().length === 0){
+        <p class="loading no-results">No se han encontrado resultados</p>
+    } @else {
+        <table>
+            <thead>
+                <tr>
+                    <th>Latin name</th>
+                    <th>English name</th>
+                    <th>Brightest Star</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (constellation of filteredConstellations(); track constellation.id) {
+                <tr>
+                    <td>{{constellation.latin_name}}</td>
+                    <td>{{constellation.english_name}}</td>
+                    <td>{{constellation.brightest_star}}</td>
+                    <td><a [routerLink]="['/constellation', constellation.id]"><i class="material-icons">visibility</i></a></td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    }
+</section>

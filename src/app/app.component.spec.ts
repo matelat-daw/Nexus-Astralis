@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'Nexus-Astralis' title`, () => {
+  it(`should have the 'nexus-astralis-front' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('Nexus-Astralis');
+    expect(app.title).toEqual('nexus-astralis-front');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, Nexus-Astralis');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, nexus-astralis-front');
   });
 });

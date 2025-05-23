@@ -1,0 +1,151 @@
+:host {
+    width: 100%;
+    margin: 2em;
+}
+
+.title{
+    margin-bottom: 1em;
+    text-shadow: 0.3125rem 0.125rem 0.0625rem var(--highlight);
+    text-align: center;
+    font-size: 2rem;
+}
+
+.team-cont{
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    gap: 2em;
+}
+
+/* Members */
+.member-card{
+    min-height: 9.375rem;
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 0em;
+    align-items: center;
+
+    transition: transform 0.3s ease-in-out;;
+
+    padding: 1em 0 1em 1em;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+    background-color: var(--bg-surface);
+
+    transform: translateX(0);
+
+    &.reverse{
+        padding: 1em 1em 1em 0em;
+        grid-template-columns: 1fr 100px;
+        transform: translateX(0);
+        justify-self: end;
+        .member-info{
+            text-align: end;
+        }
+
+        .member-img {
+            justify-self: end;
+        }
+        .social{
+            justify-content: end;
+            flex-direction: row-reverse;
+        }
+    }
+}
+
+/* Member Info */
+.member-info{
+    padding: 1em;
+    h4{
+        margin-bottom: 0.2em;
+    }
+    p{
+        margin-bottom: 1em;
+    }
+}
+
+.social{
+    font-size: 1em;
+    display: flex;
+    justify-content: start;
+    gap: 1em;
+    a{
+        white-space: nowrap;
+        color: var(--color-primary);
+        text-decoration: none;
+        direction: ltr;
+        i{
+            margin-right: 0.3em;
+        }
+    }
+}
+
+.member-img{
+    width: 100px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Media queries */
+/* Tablet en adelante */
+@media (min-width: 768px) {
+    :host {
+        margin: 1em 10%;
+    }
+    .member-card{
+        display: grid;
+        grid-template-columns: max-content 2fr;
+        gap: 0em;
+        padding: 1em;
+        &.reverse{
+            grid-template-columns: 2fr max-content;
+            padding: 1em;
+        }
+    }
+    .member-info{
+        h4{
+            margin-bottom: 0.2em;
+        }
+        p{
+            margin-bottom: 1em;
+        }
+    }
+    .social{
+        font-size: 1.3em;
+    }
+    .member-img{
+        width: 9.375rem;
+    }
+}
+
+/* Escritorio mediano en adelante */
+@media (min-width: 1024px) {
+    .member-card{
+        width: 90%;
+    }
+    .member-img{
+        width: 12.5rem;
+    }
+}
+
+/* Escritorio grande */
+@media (min-width: 1280px) {
+    :host {
+        margin: 1em 20%;
+    }
+    
+    .team-cont{
+        gap: 4em;
+    }
+    
+    /* Members */
+    .member-card{
+        transform: translateX(-10%);
+    
+        &.reverse{
+            transform: translateX(10%);
+        }
+    }
+}

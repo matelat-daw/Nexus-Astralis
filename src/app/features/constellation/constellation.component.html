@@ -1,0 +1,169 @@
+<div class="container">
+    @if (loading()) {
+        <div class="loading">
+            <p>Cargando constelación...</p>
+        </div>
+    } @else if (errorMesage()) {
+        <div class="error-message">
+            <p>{{ errorMesage() }}</p>
+        </div>
+    } @if (constellation()) {
+        <section class="constellation-section">
+            <div class="constellation-header">
+                <h1>{{ constellation()?.latin_name }}</h1>
+                @if (constellation()?.english_name) {
+                    <h2>{{ constellation()?.english_name }}</h2>
+                }
+                @if (constellation()?.spanish_name) {
+                    <h2>{{ constellation()?.spanish_name }}</h2>
+                }
+                @if (isLogged()) {
+                    <button class="favorite-button" (click)="toggleFavorite()">
+                        <span class="favorite-icon" [class.is-favorite]="isFavorite()">
+                            <mat-icon>{{ isFavorite() ? 'star' : 'star_border' }}</mat-icon>
+                        </span>
+                        <span class="favorite-text">{{ isFavorite() ? 'Quitar de favoritos' : 'Añadir a favoritos' }}</span>
+                    </button>
+                }
+            </div>
+            
+            <div class="constellation-info">
+                @if (constellation()?.image_url) {
+                    <div class="constellation-image">
+                        <img src="{{ constellation()?.image_url }}" alt="{{ constellation()?.latin_name }}">
+                    </div>
+                }
+                
+                <div class="constellation-details">
+                    @if (constellation()?.mythology) {
+                        <div class="detail-item">
+                            <h3>Mitología</h3>
+                            <p>{{ constellation()?.mythology }}</p>
+                        </div>
+                    }
+                    
+                    <div class="detail-grid">
+                        @if (constellation()?.area_degrees) {
+                            <div class="detail-item">
+                                <h4>Área</h4>
+                                <p>{{ constellation()?.area_degrees }} grados cuadrados</p>
+                            </div>
+                        }
+                        
+                        @if (constellation()?.declination) {
+                            <div class="detail-item">
+                                <h4>Declinación</h4>
+                                <p>{{ constellation()?.declination }}</p>
+                            </div>
+                        }
+                        
+                        @if (constellation()?.celestial_zone) {
+                            <div class="detail-item">
+                                <h4>Zona Celestial</h4>
+                                <p>{{ constellation()?.celestial_zone }}</p>
+                            </div>
+                        }
+                        
+                        @if (constellation()?.ecliptic_zone) {
+                            <div class="detail-item">
+                                <h4>Zona Eclíptica</h4>
+                                <p>{{ constellation()?.ecliptic_zone }}</p>
+                            </div>
+                        }
+                        
+                        @if (constellation()?.brightest_star) {
+                            <div class="detail-item">
+                                <h4>Estrella más brillante</h4>
+                                <p>{{ constellation()?.brightest_star }}</p>
+                            </div>
+                        }
+                        
+                        @if (constellation()?.discovery) {
+                            <div class="detail-item">
+                                <h4>Descubrimiento</h4>
+                                <p>{{ constellation()?.discovery }}</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </section>
+    } @else {
+        <div class="no-results">
+            <p>No se ha encontrado la constelación</p>
+        </div>
+    }        
+    @if (stars().length != 0) {
+        <section class="stars-section">
+            <h3>Estrellas conocidas asociadas</h3>
+            <ul class="stars-list">
+                @for (star of stars(); track star.id) {
+                    @if (star.proper || star.bf || star.spect) {
+                        <li class="star-item">
+                            <a [routerLink]="['/star', star.id]" class="star-link">
+                                {{ star.proper || star.bf || star.spect }}
+                            </a>
+                        </li>
+                    }
+                }
+            </ul>
+        </section>
+    }
+
+    @if (isLogged()) {
+        <section class="comments-section">
+            <h3>Comentarios</h3>
+            
+            @if (isLogged()) {
+                <div class="comment-wrapper">
+                    <form class="comment-form" [formGroup]="commentForm" (ngSubmit)="submitComment()">
+                        <textarea 
+                            class="comment-input" 
+                            placeholder="Escribe tu comentario..." 
+                            formControlName="comment"
+                            maxlength="80"
+                        ></textarea>
+                        <button type="submit" class="comment-submit">
+                            <mat-icon>send</mat-icon>
+                        </button>
+                    </form>
+                    
+                    @if (commentForm.get('comment')?.invalid && (commentForm.get('comment')?.dirty || commentForm.get('comment')?.touched)) {
+                        <div class="comment-validation">
+                            @if (commentForm.get('comment')?.errors?.['required']) {
+                                <small>El comentario es obligatorio.</small>
+                            }
+                            @if (commentForm.get('comment')?.errors?.['minlength']) {
+                                <small>El comentario debe tener al menos 3 caracteres.</small>
+                            }
+                            @if (commentForm.get('comment')?.errors?.['maxlength']) {
+                                <small>El comentario no puede exceder los 80 caracteres.</small>
+                            }
+                        </div>
+                    }
+                    
+                    @if (commentForm.get('comment')?.value) {
+                        <div class="character-count">
+                            <small>{{commentForm.get('comment')?.value?.length || 0}}/80</small>
+                        </div>
+                    }
+                </div>
+            }
+            
+            <div class="comments-container">
+                @for (comment of comments(); track comment.id) {
+                    <div class="comment-card">
+                        <div class="comment-header">
+                            <a [routerLink]="['/user', comment.userNick]" class="user-link">
+                                <h4>{{ comment.userNick }}</h4>
+                            </a>
+                        </div>
+                        <div class="comment-body">
+                            <p>{{ comment.comment }}</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </section>
+    }
+</div>

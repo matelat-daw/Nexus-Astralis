@@ -1,0 +1,131 @@
+<div class="container">
+    @if (loading()) {
+        <div class="loading">
+            <p>Cargando estrella...</p>
+        </div>
+    } @else if (errorMessage()) {
+        <div class="error-message">
+            <p>{{ errorMessage() }}</p>
+        </div>
+    } @else if (star()) {
+        <section class="star-section">
+            <div class="star-header">
+                @if (star()?.proper) {
+                    <h1>{{ star()!.proper }}</h1>
+                } @else if (star()?.bf) {
+                    <h1>{{ star()!.bf }}</h1>
+                } @else if (star()?.spect) {
+                    <h1>{{ star()!.spect }}</h1>
+                } @else {
+                    <h1>Estrella no identificada</h1>
+                }
+            </div>
+            
+            <div class="star-info">
+                <div class="star-visual">
+                    <div class="star-image" [ngClass]="getStarClass()">
+                        <div class="star-glow"></div>
+                    </div>
+                    @if (star()?.spect) {
+                        <div class="spectral-info">
+                            <h3>Tipo Espectral</h3>
+                            <p>{{ star()?.spect }}</p>
+                        </div>
+                    }
+                </div>
+                
+                <div class="star-details">
+                    <div class="detail-grid">
+                        @if (star()?.ra) {
+                            <div class="detail-item">
+                                <h4>Ascensión Recta</h4>
+                                <p>{{ star()?.ra }}</p>
+                            </div>
+                        }
+                        
+                        @if (star()?.dec) {
+                            <div class="detail-item">
+                                <h4>Declinación</h4>
+                                <p>{{ star()?.dec }}</p>
+                            </div>
+                        }
+                        
+                        @if (star()?.mag) {
+                            <div class="detail-item">
+                                <h4>Magnitud</h4>
+                                <p>{{ star()?.mag }}</p>
+                            </div>
+                        }
+                        
+                        @if (star()?.dist) {
+                            <div class="detail-item">
+                                <h4>Distancia</h4>
+                                <p>{{ star()?.dist }} parsecs</p>
+                            </div>
+                        }
+                        
+                        @if (star()?.ci) {
+                            <div class="detail-item">
+                                <h4>Índice de Color</h4>
+                                <p>{{ star()?.ci }}</p>
+                            </div>
+                        }
+                        
+                        @if (star()?.absmag) {
+                            <div class="detail-item">
+                                <h4>Magnitud Absoluta</h4>
+                                <p>{{ star()?.absmag }}</p>
+                            </div>
+                        }
+                        
+                        @if (star()?.lum) {
+                            <div class="detail-item">
+                                <h4>Luminosidad</h4>
+                                <p>{{ star()?.lum }}</p>
+                            </div>
+                        }
+                        
+                        @if (star()?.hip) {
+                            <div class="detail-item">
+                                <h4>Hipparcos ID</h4>
+                                <p>{{ star()?.hip }}</p>
+                            </div>
+                        }
+                        
+                        @if (star()?.hd) {
+                            <div class="detail-item">
+                                <h4>HD Catálogo</h4>
+                                <p>{{ star()?.hd }}</p>
+                            </div>
+                        }
+                        
+                        @if (star()?.bayer) {
+                            <div class="detail-item">
+                                <h4>Designación Bayer</h4>
+                                <p>{{ star()?.bayer }}</p>
+                            </div>
+                        }
+                        
+                        @if (star()?.flam) {
+                            <div class="detail-item">
+                                <h4>Flamsteed</h4>
+                                <p>{{ star()?.flam }}</p>
+                            </div>
+                        }
+                        
+                        @if (star()?.con) {
+                            <div class="detail-item">
+                                <h4>Constelación</h4>
+                                <p>{{ star()?.con }}</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </section>
+    } @else {
+        <div class="no-results">
+            <p>No se ha encontrado la estrella</p>
+        </div>
+    }
+</div>

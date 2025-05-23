@@ -1,0 +1,345 @@
+:host {
+    width: 100%;
+    padding: 1em 0 3em 0;
+    display: block;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: var(--text-primary);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.loading,
+.error-message,
+.no-results {
+    text-align: center;
+    margin: 30px 0;
+    font-size: 18px;
+    color: white;
+}
+
+.error-message {
+    color: var(--error-message);
+}
+
+.constellation-header {
+    margin-bottom: 2em;
+    text-align: center;
+    position: relative;
+}
+
+.constellation-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.2em;
+    color: var(--accent-blue, #64b5f6);
+}
+
+.constellation-header h2 {
+    font-size: 1.5rem;
+    font-weight: normal;
+    opacity: 0.8;
+    margin-top: 0;
+}
+
+/* Favorite button */
+.favorite-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1em auto;
+    padding: 0.5em 1em;
+    background-color: rgba(0, 0, 0, 0.3);
+    border:none;
+    border-radius: var(--border-radius);
+    color: var(--text-primary, white);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    gap: 0.5em;
+}
+
+.favorite-button:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.favorite-icon {
+    display: flex;
+    align-items: center;
+    color: #aaa;
+    transition: color 0.3s ease;
+}
+
+.favorite-icon.is-favorite {
+    color: #FFD700; /* Color dorado para favoritos */
+}
+
+.favorite-text {
+    font-weight: 500;
+}
+
+/* Constellation info section */
+
+.constellation-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    margin-bottom: 2em;
+    padding: 1em;
+}
+
+.constellation-image {
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.constellation-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--border-radius);
+}
+
+.constellation-details {
+    flex: 1;
+}
+
+.detail-item {
+    margin-bottom: 1.5em;
+}
+
+.detail-item h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.5em;
+    color: var(--accent-blue, #64b5f6);
+}
+
+.detail-item h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.3em;
+    color: var(--accent-blue, #64b5f6);
+}
+
+.detail-item p {
+    line-height: 1.6;
+    margin: 0;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5em;
+    margin-top: 1.5em;
+}
+
+.stars-section {
+    margin: 2em 0;
+    padding: 1.5em;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.stars-section h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1em;
+    color: var(--accent-blue, #64b5f6);
+}
+
+.stars-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1em;
+    padding: 0;
+    list-style: none;
+}
+
+.star-item {
+    padding: 0.5em;
+}
+
+.star-link {
+    color: var(--text-primary, white);
+    text-decoration: none;
+    opacity: 0.8;
+    transition: opacity 0.3s ease, color 0.3s ease;
+    display: block;
+    padding: 0.5em;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.05);
+    text-align: center;
+}
+
+.star-link:hover {
+    opacity: 1;
+    color: var(--accent-blue, #64b5f6);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.comments-section {
+    margin: 2em 0;
+}
+
+.comments-section h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1em;
+    color: var(--accent-blue, #64b5f6);
+}
+
+/* Comment form */
+.comment-wrapper {
+    margin-bottom: 1.5em;
+}
+
+.comment-form {
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 0.5em;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.comment-input {
+    flex: 1;
+    background-color: transparent;
+    border: none;
+    color: var(--text-primary, white);
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 1rem;
+    padding: 0.8em;
+    resize: none;
+    min-height: 60px;
+    outline: none;
+}
+
+.comment-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.comment-submit {
+    background-color: transparent;
+    border: none;
+    color: var(--accent-blue, #64b5f6);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5em;
+    transition: all 0.3s ease;
+}
+
+.comment-submit:hover {
+    color: white;
+    transform: translateX(2px);
+}
+
+/* Estilos para validación de comentarios */
+.comment-validation {
+    margin-top: 0.5rem;
+    color: #ff4081;
+    font-size: 0.85rem;
+    padding-left: 0.8em;
+}
+
+.character-count {
+    text-align: right;
+    margin-top: 0.25rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+    padding-right: 0.8em;
+}
+
+.comments-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+}
+
+.comment-card {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.comment-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+.comment-header {
+    padding: 1em;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.comment-header h4 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.user-link {
+    color: var(--accent-blue, #64b5f6);
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+.user-link:hover {
+    opacity: 0.8;
+}
+
+.comment-body {
+    padding: 1em;
+    line-height: 1.6;
+}
+
+.comment-body p {
+    margin: 0;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+    :host {
+        padding: 1em 15% 3em 15%;
+    }
+    
+    .constellation-info {
+        flex-direction: row;
+    }
+    
+    .constellation-image {
+        width: 40%;
+    }
+    
+    .constellation-details {
+        width: 60%;
+        padding-left: 2em;
+    }
+    
+    .detail-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    :host {
+        padding: 1em 20% 3em 20%;
+    }
+    
+    .detail-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1280px) {
+    .stars-list {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}

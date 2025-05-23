@@ -1,0 +1,104 @@
+<section class="profile-container">
+    @if (loading()) {
+        <div class="loading-container">
+            <mat-spinner/>
+        </div>
+    }
+    @if (!loading() && user()) {
+        <div class="profile-header">
+            <img [src]="profileImage()" alt="Imagen de perfil" class="profile-image">
+            <h2>{{user()?.nick}}</h2>
+        </div>
+        @if (user()?.publicProfile) {
+            <mat-tab-group animationDuration="300ms" class="profile-tabs">
+                <mat-tab label="Perfil">
+                    <div class="tab-content">
+                            <div class="profile-info">
+                                @if (user()?.about) {
+                                <mat-card>
+                                        <mat-card-header>
+                                            <mat-card-title>Sobre mí</mat-card-title>
+                                        </mat-card-header>
+                                        <mat-card-content>
+                                            <p>{{user()?.about}}</p>
+                                        </mat-card-content>
+                                    </mat-card>
+                                }
+                                <mat-card>
+                                    <mat-card-header>
+                                        <mat-card-title>Información personal</mat-card-title>
+                                    </mat-card-header>
+                                    <mat-card-content>
+                                        @if (user()?.userLocation) {
+                                            <p><strong>Ubicación:</strong> {{user()?.userLocation}}</p>
+                                        }
+                                        <p><strong>Nombre:</strong> {{user()?.name}} {{user()?.surname1}} {{user()?.surname2}}</p>
+                                        <p><strong>Fecha de nacimiento:</strong> {{user()?.bday}}</p>
+                                        <!-- <p><strong>Email:</strong> {{user()?.email}}</p> -->
+                                        @if (user()?.phoneNumber) {
+                                            <p><strong>Teléfono:</strong> {{user()?.phoneNumber}}</p>
+                                        }
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                    </div>
+                </mat-tab>
+    
+                <!-- Pestaña de Favoritos -->
+                <mat-tab label="Favoritos">
+                    <div class="tab-content">
+                        @if(user()?.favorites && user()?.favorites!.length > 0) {
+                            <div class="favorites-list">
+                                @for (favorite of user()?.favorites; track favorite.id) {
+                                    <mat-card class="favorite-card">
+                                        <img [src]="favorite.image_url" alt="{{favorite.latin_name}}" class="favorite-image">
+                                        <mat-card-content>
+                                            <a [routerLink]="['/constellation', favorite.id]" class="constellation-link">{{favorite.latin_name}}</a>
+                                            <p>{{favorite.mythology}}</p>
+                                        </mat-card-content>
+                                    </mat-card>
+                                }
+                            </div>
+                        } @else {
+                            <div class="empty-state">
+                                <mat-icon>star_border</mat-icon>
+                                <p>{{user()?.nick}} no tiene constelaciones favoritas</p>
+                            </div>
+                        }
+                    </div>
+                </mat-tab>
+    
+                <!-- Pestaña de Comentarios -->
+                <mat-tab label="Comentarios">
+                    <div class="tab-content">
+                        @if(user()?.comments && user()?.comments!.length > 0) {
+                            <div class="comments-list">
+                                @for (comment of user()?.comments; track comment.id) {
+                                    <mat-card class="comment-card">
+                                        <mat-card-header>
+                                            <mat-card-title>
+                                                <a class="constellation-link" [routerLink]="['/constellation', comment.constellationId]">
+                                                    {{comment.constellationName}}
+                                                </a>
+                                            </mat-card-title>
+                                        </mat-card-header>
+                                        <mat-card-content class="card-text">
+                                            <p>{{comment.comment}}</p>
+                                        </mat-card-content>
+                                    </mat-card>
+                                }
+                            </div>
+                        } @else {
+                            <div class="empty-state">
+                                <mat-icon>comment</mat-icon>
+                                <p>{{user()?.nick}} no ha realizado ningún comentario</p>
+                            </div>
+                        }
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        } @else {
+            <p class="private">Este perfil es privado.</p>
+        }
+    }
+</section>

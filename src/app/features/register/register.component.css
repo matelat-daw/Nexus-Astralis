@@ -1,0 +1,117 @@
+section {
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+div.register {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    background-color: var(--layout-bg);
+
+    * {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    form {
+        margin-top: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        div {
+            input {
+                padding: 0.5rem;
+                border-radius: var(--border-radius);
+                border: 1px solid var(--border-color);
+            }
+
+            label {
+                font-weight: bold;
+                text-indent: 0.5rem;
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        button {
+            padding: 0.5rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-surface);
+            color: var(--text-color);
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--highlight);
+            }
+        }
+
+        .password-toggle input[type="checkbox"] {
+            margin: 0;
+            width: auto;
+        }
+
+        .password-toggle label {
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .password-input {
+            position: relative;
+            display: block;
+        }
+
+        .password-input i::before {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 3;
+            cursor: pointer;
+            color: var(--highlight);
+        }
+
+        .password-input input {
+            padding-right: 2.5rem;
+            position: relative;
+        }
+    }
+    
+    div.redirect {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        justify-content: center;
+
+        * {
+            padding: 2rem 0 1rem;
+            width: max-content;
+        }
+    }
+}
+
+@media (min-width: 463px) {
+    div.register {
+        padding: 3rem;
+        width: 25rem;
+    }
+}
+
+@media (min-width: 768px) {
+    div.register {
+        padding: 3rem;
+        width: 30rem;
+    }
+}
