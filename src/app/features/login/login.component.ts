@@ -33,7 +33,7 @@ export class LoginComponent {
     try {
       const { email, password } = this.form.value;
       await this.authService.login(email!, password!);
-      await this.router.navigate(['/']);
+      await this.router.navigate(['/profile']);
     } catch (error: any) {
       const errorList = error.message.split('|');
       errorList.forEach((err: string) => {
