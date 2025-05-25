@@ -4,13 +4,14 @@ import { withInMemoryScrolling } from '@angular/router';
 import { AppComponent } from './app/app.component';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { routes } from './app/app.routes';
+import { appConfig } from './app/app.config';
 
 const scrollConfig: InMemoryScrollingOptions = {
   anchorScrolling: 'enabled',
   scrollPositionRestoration: 'enabled',
 };
 
-bootstrapApplication(AppComponent, {
+bootstrapApplication(AppComponent, appConfig).then(() => {
   providers: [
     provideRouter(
       routes,

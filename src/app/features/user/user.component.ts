@@ -56,7 +56,7 @@ export class UserComponent {
       const user = await this.usersService.getInfoByNick(id);
       if (!user) throw new Error('Usuario no encontrado.');      
       this.user.set(user);
-      this.profileImage.set(`https://88.24.26.59/${user.profileImage}`);
+      this.profileImage.set(`${user.profileImage}`);
     } catch (error: any) {
       this.errorMessage.set(`Error cargando usuario: ${error.message || error}`)
     } finally {

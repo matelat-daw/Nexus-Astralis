@@ -17,6 +17,7 @@ import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } 
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -70,16 +71,25 @@ export class ProfileComponent {
     private snackBar: MatSnackBar,
     private router: Router,
     private fb: FormBuilder,
-  ) {}
+    private authService: AuthService
+  ) {this.profileImage = this.authService.profileImage;}
 
   async ngOnInit(): Promise<void> {
+    if (!sessionStorage.getItem('profileReloaded')) {
+      sessionStorage.setItem('profileReloaded', 'true');
+      location.reload();
+    } else {
+      sessionStorage.removeItem('profileReloaded');
+    }
+    this.onLoginSuccess();
+  }
+
+  async onLoginSuccess() {
+    this.loading.set(true);
     try {
       const user = await this.usersService.getMyProfile();
-      if (!user) throw new Error('Perfil no encontrado.');
       this.user.set(user);
-      this.profileImage.set(`https://88.24.26.59/${user.profileImage}`);
-    } catch (error: any) {
-      this.errorMessage.set(`Error cargando usuario: ${error.message || error}`)
+      this.profileImage.set(user.profileImage);
     } finally {
       this.loading.set(false);
     }
@@ -146,64 +156,29 @@ export class ProfileComponent {
       this.editingUser.set({...this.editingUser()!, ...values});
     });
   }
-  
+
   validateForm(): boolean {
     this.resetErrorMessages();
-    if (this.profileForm.valid) {
-      return true;
-    }    
+    if (this.profileForm.valid) return true;
     const controls = this.profileForm.controls;
-    
-    if (controls['nick'].invalid) {
-      if (controls['nick'].errors?.['required']) {
-        this.addError('nick', 'El nombre de usuario es obligatorio');
+    const rules = [
+      { field: 'nick', errors: { required: 'El nombre de usuario es obligatorio', maxlength: 'El nombre de usuario no puede exceder los 20 caracteres' } },
+      { field: 'name', errors: { required: 'El nombre es obligatorio', minlength: 'El nombre debe tener al menos 2 caracteres', maxlength: 'El nombre no puede exceder los 50 caracteres' } },
+      { field: 'surname1', errors: { required: 'El primer apellido es obligatorio', minlength: 'El primer apellido debe tener al menos 2 caracteres', maxlength: 'El primer apellido no puede exceder los 50 caracteres' } },
+      { field: 'surname2', errors: { maxlength: 'El segundo apellido no puede exceder los 50 caracteres' } },
+      { field: 'email', errors: { required: 'El email es obligatorio', email: 'El formato del email no es válido' } },
+      { field: 'phoneNumber', errors: { pattern: 'El teléfono debe tener 9 dígitos' } },
+      { field: 'userLocation', errors: { maxlength: 'La ubicación no puede exceder los 100 caracteres' } },
+      { field: 'about', errors: { maxlength: 'La descripción no puede exceder los 500 caracteres' } }
+    ];
+    rules.forEach(({ field, errors }) => {
+      const control = controls[field];
+      if (control && control.invalid && control.errors) {
+        Object.entries(errors).forEach(([key, msg]) => {
+          if (control.errors![key]) this.addError(field, msg);
+        });
       }
-      if (controls['nick'].errors?.['maxlength']) {
-        this.addError('nick', 'El nombre de usuario no puede exceder los 20 caracteres');
-      }
-    }
-    if (controls['name'].invalid) {
-      if (controls['name'].errors?.['required']) {
-        this.addError('name', 'El nombre es obligatorio');
-      }
-      if (controls['name'].errors?.['minlength']) {
-        this.addError('name', 'El nombre debe tener al menos 2 caracteres');
-      }
-      if (controls['name'].errors?.['maxlength']) {
-        this.addError('name', 'El nombre no puede exceder los 50 caracteres');
-      }
-    }
-    if (controls['surname1'].invalid) {
-      if (controls['surname1'].errors?.['required']) {
-        this.addError('surname1', 'El primer apellido es obligatorio');
-      }
-      if (controls['surname1'].errors?.['minlength']) {
-        this.addError('surname1', 'El primer apellido debe tener al menos 2 caracteres');
-      }
-      if (controls['surname1'].errors?.['maxlength']) {
-        this.addError('surname1', 'El primer apellido no puede exceder los 50 caracteres');
-      }
-    }
-    if (controls['surname2'].invalid && controls['surname2'].errors?.['maxlength']) {
-      this.addError('surname2', 'El segundo apellido no puede exceder los 50 caracteres');
-    }
-    if (controls['email'].invalid) {
-      if (controls['email'].errors?.['required']) {
-        this.addError('email', 'El email es obligatorio');
-      }
-      if (controls['email'].errors?.['email']) {
-        this.addError('email', 'El formato del email no es válido');
-      }
-    }
-    if (controls['phoneNumber'].invalid && controls['phoneNumber'].errors?.['pattern']) {
-      this.addError('phoneNumber', 'El teléfono debe tener 9 dígitos');
-    }
-    if (controls['userLocation'].invalid && controls['userLocation'].errors?.['maxlength']) {
-      this.addError('userLocation', 'La ubicación no puede exceder los 100 caracteres');
-    }
-    if (controls['about'].invalid && controls['about'].errors?.['maxlength']) {
-      this.addError('about', 'La descripción no puede exceder los 500 caracteres');
-    }
+    });
     return false;
   }
   

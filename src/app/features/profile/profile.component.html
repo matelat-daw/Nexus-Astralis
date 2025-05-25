@@ -6,7 +6,9 @@
     }
     @if (!loading() && user()) {
         <div class="profile-header">
-            <img [src]="profileImage()" alt="Imagen de perfil" class="profile-image">
+            @if (profileImage()){
+                <img [src]="profileImage()" alt="Imagen de perfil" class="profile-image">
+            }
             <h2>{{user()?.nick}}</h2>
         </div>
 

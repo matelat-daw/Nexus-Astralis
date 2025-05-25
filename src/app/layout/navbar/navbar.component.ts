@@ -1,6 +1,6 @@
 import { Component, computed, effect } from '@angular/core';
 import { AuthService } from '../../services/auth/auth.service';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
 })
 export class NavbarComponent {
 
-  constructor(public authService: AuthService) {
+  constructor(public authService: AuthService, private router: Router) {
     effect(() => {
       this.isLogged();
     });
@@ -18,7 +18,8 @@ export class NavbarComponent {
 
   isLogged = computed(() => this.authService.isAuthenticated());
   
-  logout() {
-    this.authService.logout();
+  async logout() {
+    await this.authService.logout();
+    this.router.navigate(['/']);
   }
 }

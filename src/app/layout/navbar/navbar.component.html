@@ -11,7 +11,8 @@
     @if (isLogged()) {
         <div class="user-management">
             <a routerLink="/profile" title="Perfil"><i class="fa-solid fa-user-astronaut"></i></a>
-            <a (click)="logout()" routerLink="/logout" title="Cerrar sesión"><i class="fa-solid fa-right-from-bracket"></i></a>
+            <!-- <a (click)="logout()" routerLink="/logout" title="Cerrar sesión"><i class="fa-solid fa-right-from-bracket"></i></a> -->
+            <a (click)="logout()" title="Cerrar sesión"><i class="fa-solid fa-right-from-bracket"></i></a>
         </div>
     } @else {
         <div class="auth">
