@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, signal, computed } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
@@ -209,6 +209,12 @@ void main() {
   providers: [ConstellationsService, StarsService]
 })
 export class StarmapComponent implements OnInit, AfterViewInit {
+    
+    // Método para navegar a la ruta 'solar'
+goToSolar() {
+    // Navega a la ruta 'solar' cuando se llama a este método
+    this.router.navigate(['/solar']);
+}
   // REFERENCIA AL CANVAS
   // Obtiene una referencia al elemento canvas del DOM para renderizar Three.js
   @ViewChild('starCanvas') private canvasRef!: ElementRef<HTMLCanvasElement>;
@@ -364,7 +370,7 @@ export class StarmapComponent implements OnInit, AfterViewInit {
   // onMouseMove: any;
   // CONSTRUCTOR
   // Inicializa el componente y sus dependencias
-  constructor(public authService: AuthService, public userService: UsersService) { }
+  constructor(public authService: AuthService, public userService: UsersService, private router: Router) { }
 
   // Autenticación
   isLogged = computed(() => this.authService.isAuthenticated());

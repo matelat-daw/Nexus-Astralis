@@ -13,6 +13,7 @@ import { LoginComponent } from './features/login/login.component';
 import { RegisterComponent } from './features/register/register.component';
 import { ProfileComponent } from './features/profile/profile.component';
 import { authGuard } from './services/auth/auth.guard';
+import { SolarComponent } from './features/solar/solar.component';
 
 export const routes: Routes = [
     {
@@ -42,5 +43,6 @@ export const routes: Routes = [
         ]
     },
     { path: 'starmap', component: StarmapComponent },
+    { path: 'solar', component: SolarComponent },
     { path: '**', redirectTo: '' },
 ];
