@@ -1,1 +1,19 @@
-<p>solar works!</p>
+<div class="controls">
+  <a routerLink="/" class="control-button" title="Volver al Inicio">
+    <i class="fa-solid fa-house icons"></i>
+  </a>
+</div>
+@if (showPlanetInfo)
+{
+  <div 
+    class="planet-info-panel"
+    [class.visible]="showPlanetInfo"
+  >
+    <h2>{{ selectedPlanet?.name | titlecase }}</h2>
+    <p>{{ selectedPlanet?.description }}</p>
+    <div class="planet-info-buttons">
+      <button (click)="closePlanetInfo()">Cerrar</button>
+      <button (click)="addToFavorites(selectedPlanet)">Agregar a Favoritos</button>
+    </div>
+  </div>
+}

@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-solar',
-  imports: [],
+  imports: [ CommonModule, RouterLink ],
   templateUrl: './solar.component.html',
   styleUrl: './solar.component.css'
 })
-export class SolarComponent implements OnInit  {
-    private finalDistanceScale!: number;
-    private animationActive = true;
-    public selectedPlanet: any = null;
-    public showPlanetInfo: boolean = false;
+export class SolarComponent implements OnInit, OnDestroy {
+  private finalDistanceScale!: number;
+  private animationActive = true;
+  public selectedPlanet: any = null;
+  public showPlanetInfo: boolean = false;
 
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
@@ -25,15 +27,15 @@ export class SolarComponent implements OnInit  {
   private planetObjects: any = {};
 
   private planetData = [
-    { name: "sun", orbitalPeriod: 0, distance: 0, diameter: 1392684, rotationPeriod: 27 },
-    { name: "mercury", orbitalPeriod: 88, distance: 57.9, diameter: 4879, rotationPeriod: 58.6 },
-    { name: "venus", orbitalPeriod: 225, distance: 108.2, diameter: 12104, rotationPeriod: -243 },
-    { name: "earth", orbitalPeriod: 365.25, distance: 149.6, diameter: 12742, rotationPeriod: 1 },
-    { name: "mars", orbitalPeriod: 687, distance: 227.9, diameter: 6779, rotationPeriod: 1.03 },
-    { name: "jupiter", orbitalPeriod: 4333, distance: 778.5, diameter: 139820, rotationPeriod: 0.41 },
-    { name: "saturn", orbitalPeriod: 10759, distance: 1432.0, diameter: 116460, rotationPeriod: 0.45 },
-    { name: "uranus", orbitalPeriod: 30687, distance: 2867.0, diameter: 50724, rotationPeriod: 0.72 },
-    { name: "neptune", orbitalPeriod: 60190, distance: 4515.0, diameter: 49244, rotationPeriod: 0.67 }
+    { name: "sun", orbitalPeriod: 0, distance: 0, diameter: 1392684, rotationPeriod: 27, description: "El Sol es una estrella de tipo espectral G2V, que constituye el centro del sistema solar. Es una esfera casi perfecta de plasma caliente, con un diámetro de aproximadamente 1.4 millones de kilómetros y una masa que representa el 99.86% de la masa total del sistema solar." },
+    { name: "mercury", orbitalPeriod: 88, distance: 57.9, diameter: 4879, rotationPeriod: 58.6, description: "Mercurio es el planeta más cercano al Sol y el más pequeño del sistema solar. Tiene un diámetro de aproximadamente 4,880 kilómetros y una masa que representa el 0.055% de la masa de la Tierra. Su superficie está cubierta de cráteres y no tiene atmósfera significativa." },
+    { name: "venus", orbitalPeriod: 225, distance: 108.2, diameter: 12104, rotationPeriod: -243, description: "Venus es el segundo planeta del sistema solar y es similar en tamaño y composición a la Tierra, pero tiene una atmósfera densa compuesta principalmente de dióxido de carbono. Su diámetro es de aproximadamente 12,104 kilómetros y su masa es el 81.5% de la masa terrestre. Venus rota en sentido retrógrado, lo que significa que gira en dirección opuesta a la mayoría de los planetas." },
+    { name: "earth", orbitalPeriod: 365.25, distance: 149.6, diameter: 12742, rotationPeriod: 1, description: "La Tierra es el tercer planeta del sistema solar y el único conocido que alberga vida. Tiene un diámetro de aproximadamente 12,742 kilómetros y una masa que representa el 5.97 x 10^24 kg. La Tierra tiene una atmósfera rica en oxígeno y agua, lo que la hace única entre los planetas rocosos." },
+    { name: "mars", orbitalPeriod: 687, distance: 227.9, diameter: 6779, rotationPeriod: 1.03, description: "Marte es el cuarto planeta del sistema solar y es conocido como el 'planeta rojo' debido a su superficie rica en óxido de hierro. Tiene un diámetro de aproximadamente 6,779 kilómetros y una masa que representa el 10.7% de la masa terrestre. Marte tiene dos lunas pequeñas, Fobos y Deimos." },
+    { name: "jupiter", orbitalPeriod: 4333, distance: 778.5, diameter: 139820, rotationPeriod: 0.41, description: "Júpiter es el quinto planeta del sistema solar y el más grande, con un diámetro de aproximadamente 139,820 kilómetros. Su masa es 318 veces la de la Tierra, lo que lo convierte en un gigante gaseoso. Júpiter tiene una atmósfera compuesta principalmente de hidrógeno y helio, y es conocido por su Gran Manch Roja, una gigantesca tormenta." },
+    { name: "saturn", orbitalPeriod: 10759, distance: 1432.0, diameter: 116460, rotationPeriod: 0.45, description: "Saturno es el sexto planeta del sistema solar y es famoso por sus impresionantes anillos. Tiene un diámetro de aproximadamente 116,460 kilómetros y una masa que representa el 95.2% de la masa de Júpiter. Saturno es un gigante gaseoso con una atmósfera compuesta principalmente de hidrógeno y helio." },
+    { name: "uranus", orbitalPeriod: 30687, distance: 2867.0, diameter: 50724, rotationPeriod: 0.72, description: "Urano es el séptimo planeta del sistema solar y es conocido por su color azul verdoso debido a la presencia de metano en su atmósfera. Tiene un diámetro de aproximadamente 50,724 kilómetros y una masa que representa el 14.5% de la masa de Júpiter. Urano es un gigante gaseoso y tiene un eje de rotación inclinado, lo que provoca estaciones extremas." },
+    { name: "neptune", orbitalPeriod: 60190, distance: 4515.0, diameter: 49244, rotationPeriod: 0.67, description: "Neptuno es el octavo y último planeta del sistema solar, conocido por su color azul intenso. Tiene un diámetro de aproximadamente 49,244 kilómetros y una masa que representa el 17.1% de la masa de Júpiter. Neptuno es un gigante gaseoso con una atmósfera compuesta principalmente de hidrógeno, helio y metano." }
   ];
 
   ngOnInit(): void {
@@ -42,21 +44,21 @@ export class SolarComponent implements OnInit  {
     this.createPlanets();
     this.createPopup();
     this.animate();
-    window.addEventListener('mousemove', this.onMouseMove.bind(this));
-    window.addEventListener('resize', this.onWindowResize.bind(this));
+    window.addEventListener('mousemove', this.onMouseMove);
+    window.addEventListener('resize', this.onWindowResize);
   }
 
   ngOnDestroy(): void {
     this.animationActive = false;
-    window.removeEventListener('mousemove', this.onMouseMove.bind(this));
-    window.removeEventListener('resize', this.onWindowResize.bind(this));
+    window.removeEventListener('mousemove', this.onMouseMove);
+    window.removeEventListener('resize', this.onWindowResize);
     if (this.renderer && this.renderer.domElement) {
-        document.body.removeChild(this.renderer.domElement);
+      document.body.removeChild(this.renderer.domElement);
     }
     if (this.popupElement) {
-        document.body.removeChild(this.popupElement);
+      document.body.removeChild(this.popupElement);
     }
-}
+  }
 
   private initThree() {
     this.scene = new THREE.Scene();
@@ -80,15 +82,33 @@ export class SolarComponent implements OnInit  {
   }
 
   private createStarBackground() {
-    const textureLoader = new THREE.TextureLoader();
-    const texture = textureLoader.load('/imgs/space3.jpg');
-    const geometry = new THREE.SphereGeometry(3000, 32, 32);
-    const material = new THREE.MeshBasicMaterial({
-      map: texture,
-      side: THREE.BackSide
+
+    // --- Partículas de estrellas ---
+    const starCount = 1000;
+    const starGeometry = new THREE.BufferGeometry();
+    const starVertices = [];
+
+    for (let i = 0; i < starCount; i++) {
+        const radius = 2800 + Math.random() * 1800; // Distribución esférica
+        const theta = Math.random() * 2 * Math.PI;
+        const phi = Math.acos(2 * Math.random() - 1);
+        const x = radius * Math.sin(phi) * Math.cos(theta);
+        const y = radius * Math.sin(phi) * Math.sin(theta);
+        const z = radius * Math.cos(phi);
+        starVertices.push(x, y, z);
+    }
+
+    starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+    const starMaterial = new THREE.PointsMaterial({
+        color: 0xffffff,
+        size: 8,
+        sizeAttenuation: true,
+        transparent: true,
+        opacity: 0.7
     });
-    const starSphere = new THREE.Mesh(geometry, material);
-    this.scene.add(starSphere);
+
+    const stars = new THREE.Points(starGeometry, starMaterial);
+    this.scene.add(stars);
   }
 
   private createPlanets() {
@@ -234,7 +254,7 @@ export class SolarComponent implements OnInit  {
         const haloMaterial = new THREE.MeshBasicMaterial({
         color: 0xffff99,
         transparent: true,
-        opacity: 0.05, // Ajusta la opacidad para que sea sutil
+        opacity: 0.025, // Ajusta la opacidad para que sea sutil
         side: THREE.DoubleSide
         });
         const haloMesh = new THREE.Mesh(haloGeometry, haloMaterial);
@@ -268,28 +288,22 @@ export class SolarComponent implements OnInit  {
   }
 
   private setInitialPlanetPositions() {
-  // Época de referencia: J2000 (1 enero 2000, 12:00 TT)
-  const epoch = new Date(Date.UTC(2000, 0, 1, 12, 0, 0));
-  const now = new Date();
-  const msPerDay = 1000 * 60 * 60 * 24;
-  const daysSinceEpoch = (now.getTime() - epoch.getTime()) / msPerDay;
+    const epoch = new Date(Date.UTC(2000, 0, 1, 12, 0, 0));
+    const now = new Date();
+    const msPerDay = 1000 * 60 * 60 * 24;
+    const daysSinceEpoch = (now.getTime() - epoch.getTime()) / msPerDay;
 
-  this.planetData.forEach((planet) => {
-    if (planet.name === "sun") return; // El Sol no orbita
-    const obj = this.planetObjects[planet.name];
-    if (!obj) return;
-
-    // Fracción de la órbita completada desde la época
-    const orbitFraction = (daysSinceEpoch % planet.orbitalPeriod) / planet.orbitalPeriod;
-    // Ángulo orbital actual (en radianes)
-    const angle = orbitFraction * 2 * Math.PI;
-
-    // Posición en órbita circular (en el plano XZ)
-    const distance = planet.distance * this.finalDistanceScale;
-    obj.group.position.x = Math.cos(angle) * distance;
-    obj.group.position.z = Math.sin(angle) * distance;
-  });
-}
+    this.planetData.forEach((planet) => {
+      if (planet.name === "sun") return;
+      const obj = this.planetObjects[planet.name];
+      if (!obj) return;
+      const orbitFraction = (daysSinceEpoch % planet.orbitalPeriod) / planet.orbitalPeriod;
+      const angle = orbitFraction * 2 * Math.PI;
+      const distance = planet.distance * this.finalDistanceScale;
+      obj.group.position.x = Math.cos(angle) * distance;
+      obj.group.position.z = Math.sin(angle) * distance;
+    });
+  }
 
   private createPopup() {
     this.popupElement = document.createElement('div');
@@ -306,20 +320,20 @@ export class SolarComponent implements OnInit  {
     document.body.appendChild(this.popupElement);
   }
 
-  private onWindowResize() {
+  private onWindowResize = () => {
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-  }
+  };
 
-  private onMouseMove(event: MouseEvent) {
+  private onMouseMove = (event: MouseEvent) => {
     const canvas = this.renderer.domElement;
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
     this.mouse.x = (x / window.innerWidth) * 2 - 1;
     this.mouse.y = -(y / window.innerHeight) * 2 + 1;
-  }
+  };
 
   private checkPlanetHover() {
     this.raycaster.setFromCamera(this.mouse, this.camera);
@@ -331,9 +345,7 @@ export class SolarComponent implements OnInit  {
         if (obj.mesh === intersectedMesh) {
           this.hoveredPlanet = name;
           this.showPopup(name);
-          window.onclick = () => {
-            this.openPlanetInfo(name);
-          };
+          window.onclick = () => this.openPlanetInfo(name);
           return;
         }
       }
@@ -345,28 +357,20 @@ export class SolarComponent implements OnInit  {
   }
 
   private showPopup(planetName: string) {
-    if (planetName === "moon") {
-      this.popupElement.textContent = "Soy la Luna";
-    } else {
-      this.popupElement.textContent = planetName;
-    }
+    this.popupElement.textContent = planetName === "moon" ? "Soy la Luna" : planetName;
     const planetObj = this.planetObjects[planetName];
     if (planetObj) {
-        const worldPosition = new THREE.Vector3();
-        planetObj.mesh.getWorldPosition(worldPosition);
-
-        const vector = worldPosition.clone().project(this.camera);
-
-        const canvas = this.renderer.domElement;
-        const rect = canvas.getBoundingClientRect();
-
-        const x = rect.left + (vector.x + 1) / 2 * rect.width;
-        const y = rect.top + (-vector.y + 1) / 2 * rect.height;
-
-        this.popupElement.style.left = `${x}px`;
-        this.popupElement.style.top = `${y - 30}px`;
-        this.popupElement.style.transform = 'translate(-50%, -100%)';
-        this.popupElement.style.display = 'block';
+      const worldPosition = new THREE.Vector3();
+      planetObj.mesh.getWorldPosition(worldPosition);
+      const vector = worldPosition.clone().project(this.camera);
+      const canvas = this.renderer.domElement;
+      const rect = canvas.getBoundingClientRect();
+      const x = rect.left + (vector.x + 1) / 2 * rect.width;
+      const y = rect.top + (-vector.y + 1) / 2 * rect.height;
+      this.popupElement.style.left = `${x}px`;
+      this.popupElement.style.top = `${y - 30}px`;
+      this.popupElement.style.transform = 'translate(-50%, -100%)';
+      this.popupElement.style.display = 'block';
     }
   }
 
@@ -381,67 +385,64 @@ export class SolarComponent implements OnInit  {
     this.checkPlanetHover();
     this.animatePlanets();
     this.renderer.render(this.scene, this.camera);
+  };
+
+  private startTime = Date.now();
+
+  private animatePlanets() {
+    const elapsedSeconds = (Date.now() - this.startTime) / 1000;
+    Object.values(this.planetObjects).forEach((obj: any) => {
+      if (obj.data.rotationPeriod !== 0) {
+        const direction = obj.data.rotationPeriod > 0 ? 1 : -1;
+        const period = Math.abs(obj.data.rotationPeriod);
+        obj.mesh.rotation.y = direction * (elapsedSeconds / period) * 2 * Math.PI;
+      }
+      if (obj.data.orbitalPeriod !== 0 && obj.data.name !== "moon" && obj.data.name !== "sun") {
+        const epoch = new Date(Date.UTC(2000, 0, 1, 12, 0, 0));
+        const now = new Date(this.startTime);
+        const msPerDay = 1000 * 60 * 60 * 24;
+        const daysSinceEpoch = (now.getTime() - epoch.getTime()) / msPerDay;
+        const initialOrbitFraction = (daysSinceEpoch % obj.data.orbitalPeriod) / obj.data.orbitalPeriod;
+        const initialAngle = initialOrbitFraction * 2 * Math.PI;
+        const orbitFraction = elapsedSeconds / obj.data.orbitalPeriod;
+        const angle = initialAngle + orbitFraction * 2 * Math.PI;
+        const distance = obj.data.distance * this.finalDistanceScale;
+        obj.group.position.x = Math.cos(angle) * distance;
+        obj.group.position.z = Math.sin(angle) * distance;
+      }
+    });
+    // Lunas
+    const moonObj = this.planetObjects["moon"];
+    if (moonObj) {
+      const moonPeriod = moonObj.data.orbitalPeriod;
+      const moonOrbitFraction = elapsedSeconds / moonPeriod;
+      moonObj.group.rotation.y = moonOrbitFraction * 2 * Math.PI;
+    }
+    const phobosObj = this.planetObjects["phobos"];
+    if (phobosObj) {
+      const period = phobosObj.data.orbitalPeriod;
+      const orbitFraction = elapsedSeconds / period;
+      phobosObj.group.rotation.y = orbitFraction * 2 * Math.PI;
+    }
+    const deimosObj = this.planetObjects["deimos"];
+    if (deimosObj) {
+      const period = deimosObj.data.orbitalPeriod;
+      const orbitFraction = elapsedSeconds / period;
+      deimosObj.group.rotation.y = orbitFraction * 2 * Math.PI;
+    }
   }
 
-    private startTime = Date.now();
+  public openPlanetInfo(planetName: string) {
+    this.selectedPlanet = this.planetObjects[planetName]?.data;
+    this.showPlanetInfo = true;
+  }
 
-    private animatePlanets() {
-    // Segundos transcurridos desde el inicio
-        const elapsedSeconds = (Date.now() - this.startTime) / 1000;
-        const earthYearSeconds = this.planetData.find(p => p.name === "earth")?.orbitalPeriod || 365.25;
+  public closePlanetInfo() {
+    this.showPlanetInfo = false;
+    this.selectedPlanet = null;
+  }
 
-        Object.values(this.planetObjects).forEach((obj: any) => {
-        // Rotación sobre su eje
-        if (obj.data.rotationPeriod !== 0) {
-            const direction = obj.data.rotationPeriod > 0 ? 1 : -1;
-            const period = Math.abs(obj.data.rotationPeriod);
-            obj.mesh.rotation.y = direction * (elapsedSeconds / period) * 2 * Math.PI;
-        }
-        // Órbita alrededor del Sol
-        if (obj.data.orbitalPeriod !== 0 && obj.data.name !== "moon" && obj.data.name !== "sun") {
-            const epoch = new Date(Date.UTC(2000, 0, 1, 12, 0, 0));
-            const now = new Date(this.startTime);
-            const msPerDay = 1000 * 60 * 60 * 24;
-            const daysSinceEpoch = (now.getTime() - epoch.getTime()) / msPerDay;
-            const initialOrbitFraction = (daysSinceEpoch % obj.data.orbitalPeriod) / obj.data.orbitalPeriod;
-            const initialAngle = initialOrbitFraction * 2 * Math.PI;
-
-            const orbitFraction = elapsedSeconds / obj.data.orbitalPeriod;
-            const angle = initialAngle + orbitFraction * 2 * Math.PI;
-            const distance = obj.data.distance * this.finalDistanceScale;
-            obj.group.position.x = Math.cos(angle) * distance;
-            obj.group.position.z = Math.sin(angle) * distance;
-        }
-        });
-        const moonObj = this.planetObjects["moon"];
-      if (moonObj) {
-          const moonPeriod = moonObj.data.orbitalPeriod; // 27.3 días
-          const moonOrbitFraction = elapsedSeconds / moonPeriod;
-          moonObj.group.rotation.y = moonOrbitFraction * 2 * Math.PI;
-      }
-
-      const phobosObj = this.planetObjects["phobos"];
-        if (phobosObj) {
-            const period = phobosObj.data.orbitalPeriod;
-            const orbitFraction = elapsedSeconds / period;
-            phobosObj.group.rotation.y = orbitFraction * 2 * Math.PI;
-        }
-
-        const deimosObj = this.planetObjects["deimos"];
-            if (deimosObj) {
-                const period = deimosObj.data.orbitalPeriod;
-                const orbitFraction = elapsedSeconds / period;
-                deimosObj.group.rotation.y = orbitFraction * 2 * Math.PI;
-            }
-    }
-
-    public openPlanetInfo(planetName: string) {
-      this.selectedPlanet = this.planetObjects[planetName]?.data;
-      this.showPlanetInfo = true;
-    }
-
-    public closePlanetInfo() {
-      this.showPlanetInfo = false;
-      this.selectedPlanet = null;
-    }
+  public addToFavorites(planet: any) {
+    alert(`${planet.name} agregado a favoritos!`);
+  }
 }
