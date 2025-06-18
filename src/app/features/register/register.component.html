@@ -17,11 +17,19 @@
                 }
             </div>
             <div>
-                <label for="surname1">Apellido</label>
+                <label for="surname1">Apellido 1</label>
                 <input formControlName="surname1" placeholder="Ej. Winchester">
                 @for (msg of errorMessages['apellido']; track msg) {
                 <span class="errorMessage">{{msg}}</span>
                 }
+            </div>
+            <div>
+                <label for="surname2">Apellido 2</label>
+                <input formControlName="surname2" placeholder="Ej. Wesson">
+            </div>
+            <div>
+                <label for="phoneNumber">Teléfono:</label>
+                <input class="w-full" type="phone" id="phoneNumber" formControlName="phoneNumber"><br>
             </div>
             <div>
                 <label for="email">Email</label>
@@ -54,6 +62,28 @@
                 <span class="errorMessage">{{msg}}</span>
                 }
             </div>
+
+            <div>
+                <label for="bday">Nacimiento:</label>
+                <input class="w-full" type="date" id="bday" formControlName="bday"><br>
+            </div>
+            <div>
+                <label for="image">Imagen de Perfil:</label>
+                <input class="w-full" type="file" id="image" formControlName="image" (change)="onFileSelected($event)"><br>
+            </div>
+            <div>
+                <label for="about">Sobre Mí:</label>
+                <input class="w-full" type="text" id="about" formControlName="about"><br>
+            </div>
+            <div>
+                <label for="location">Localización:</label>
+                <input class="w-full" type="text" id="location" formControlName="location"><br>
+            </div>
+            <div>
+                <label for="publicProfile">Perfil Público?:</label>
+                <input class="w-full" type="checkbox" id="publicProfile" formControlName="publicProfile"><br><br>
+            </div>
+
             <div>
                 @for (msg of errorMessages['global']; track msg) {
                 <span class="errorMessage errorMessageGlobal">{{msg}}</span>

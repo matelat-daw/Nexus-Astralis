@@ -31,13 +31,9 @@ export class UsersService {
   }
 
   async getMyProfile(): Promise<User> {
-    // const authTokenObj = JSON.parse(sessionStorage.getItem('auth_token') || '{}');
-    // const token = authTokenObj.token;
-    // console.log("El Token es: ", token);
     const data = await fetch(`${this.API_URL}/Profile`, {
       method: 'GET',
       headers: { 'Authorization': `Bearer ${this.token()}` }
-      // headers: { 'Authorization': `Bearer ${token}` }
     });
     if (!data.ok) throw new Error(`Error fetching user profile: ${data.status}`);
     return data.json();

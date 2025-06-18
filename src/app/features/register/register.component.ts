@@ -27,7 +27,20 @@ export class RegisterComponent {
     email: new FormControl(''),
     password: new FormControl(''),
     password2: new FormControl(''),
+    bday: new FormControl<Date | string>(''),
+    image: new FormControl<File | null>(null),
+    about: new FormControl<string | null>(null),
+    location: new FormControl<string | null>(null),
+    publicProfile: new FormControl<string>('0')
   });
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.form.patchValue({ image: file });
+    }
+  }
 
   ngOnInit() {
     if (this.authService.isAuthenticated()) {
